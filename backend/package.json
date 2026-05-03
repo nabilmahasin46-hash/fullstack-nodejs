@@ -4,10 +4,9 @@
   "description": "",
   "type": "module",
   "main": "index.js",
-"scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "dev": "nodemon index.js",
-  "start": "node index.js"
+ "scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
 },
   "keywords": [],
   "author": "",
@@ -17,5 +16,8 @@
     "express": "^5.2.1",
     "mysql2": "^3.22.2",
     "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "wrangler": "^4.87.0"
   }
 }
