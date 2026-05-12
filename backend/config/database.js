@@ -1,3 +1,8 @@
+import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const db = new Sequelize(
     process.env.MYSQLDATABASE || process.env.DB_NAME, 
     process.env.MYSQLUSER || process.env.DB_USER, 
@@ -8,4 +13,5 @@ const db = new Sequelize(
         dialect: "mysql"
     }
 );
+
 export default db;
