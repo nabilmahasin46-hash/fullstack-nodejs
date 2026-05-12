@@ -12,13 +12,9 @@ const User = db.define('Users', {
     },
     gender: {
         type: DataTypes.STRING
-    },
-    freezeTableName: true // Agar Sequelize tidak mengubah nama tabel secara otomatis
-
+    }
+}, {
+    freezeTableName: true // Letaknya harus di sini (objek konfigurasi)
 });
 
 export default User;
-
-(async () => {
-    await db.sync();
-})();
