@@ -9,13 +9,16 @@ const db = new Sequelize(
     process.env.MYSQLPASSWORD,
     {
         host: process.env.MYSQLHOST,
-        port: process.env.MYSQLPORT,
+        port: process.env.MYSQLPORT || 3306,
         dialect: "mysql",
         dialectOptions: {
             ssl: {
-                rejectUnauthorized: false
+                require: true,
+                rejectUnauthorized: false 
             }
-        }
+        },
+        logging: false 
     }
 );
+
 export default db;
