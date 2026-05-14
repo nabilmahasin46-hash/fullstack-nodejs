@@ -4,57 +4,84 @@ import { Link } from 'react-router-dom';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
- useEffect(() => {
-    getUsers()}, []);
-
-
-
-  const getUsers = async () => {  
-      const response = await axios.get('http://localhost:5000/users')
-      setUsers(response.data);
-    };
-  const deleteUser = async (id) => {
+  const getUsers = async () => {
     try {
-        await axios.delete(`http://localhost:5000/users/${id}`);
+      setLoading(true);
+      const response = await axios.get(`${API_URL}/users`);
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      alert('Failed to load users: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const deleteUser = async (id) => {
+    if (!window.confirm('Are you sure?')) return;
+    try {
+        setLoading(true);
+        await axios.delete(`${API_URL}/users/${id}`);
         getUsers(); 
     } catch (error) {
-        console.log(error);
+        console.error('Error deleting user:', error);
+        alert('Error deleting user: ' + error.response?.data?.msg || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="columns mt-5 is-centered">
         <div className="column is-half">
-            <Link to={`add`}className="button is-success">Add New</Link>
-         <table className="table is-striped is-fullwidth">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-                {users.map((user, index) => (
-                    <tr key={user.uuid}>
-                        <td>{index + 1}</td>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.gender}</td>
-                        <td>
-                            <Link to={`edit/${user.id}`} className="button is-small is-info">Edit</Link>
-                            <button onClick={() => deleteUser(user.id)} className="button is-small is-danger ml-2">Delete</button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-          </table>   
+            <Link to={`add`} className="button is-success mb-3">Add New</Link>
+            
+            {loading && <p className="is-loading">Loading...</p>}
+            
+            {users.length === 0 && !loading ? (
+              <div className="notification is-info">No users found</div>
+            ) : (
+              <table className="table is-striped is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {users.map((user, index) => (
+                        <tr key={user.id}>
+                            <td>{index + 1}</td>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>{user.gender}</td>
+                            <td>
+                                <Link to={`edit/${user.id}`} className="button is-small is-info">Edit</Link>
+                                <button 
+                                  onClick={() => deleteUser(user.id)} 
+                                  className="button is-small is-danger ml-2"
+                                  disabled={loading}
+                                >
+                                  Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+              </table>
+            )}
         </div>
     </div>
- 
   )
 }
 
