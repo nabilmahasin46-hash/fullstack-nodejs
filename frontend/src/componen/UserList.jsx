@@ -11,10 +11,13 @@ const UserList = () => {
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/users`);
-      setUsers(response.data);
+      // Ensure response.data is an array
+      const data = Array.isArray(response.data) ? response.data : [];
+      setUsers(data);
     } catch (error) {
       console.error('Error fetching users:', error);
       alert('Failed to load users: ' + error.message);
+      setUsers([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
