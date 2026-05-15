@@ -5,14 +5,17 @@ import UserRoutes from "./routes/UserRoutes.js";
 const app = express();
 
 // Database connection dengan proper error handling
+let dbConnected = false;
 (async () => {
     try {
         await db.authenticate();
-        console.log('Database Connected...');
+        console.log('✅ Database Connected...');
         await db.sync();
+        dbConnected = true;
     } catch (error) {
-        console.error('Database Connection Failed:', error.message);
+        console.error('❌ Database Connection Failed:', error.message);
         console.error('App will start but database operations will fail');
+        dbConnected = false;
     }
 })();
 
@@ -22,11 +25,16 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '10mb' })); // Limit request size
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.get('/', (req, res) => {
-    res.json({ msg: 'Backend is running', timestamp: new Date().toISOString() });
+    res.json({ 
+        msg: 'Backend is running',
+        timestamp: new Date().toISOString(),
+        databaseConnected: dbConnected,
+        environment: process.env.NODE_ENV || 'development'
+    });
 });
 
 app.use(UserRoutes);
