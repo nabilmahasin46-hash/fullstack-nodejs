@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_URL = process.env.REACT_APP_API_URL || 'respectful-transformation-production-f907.up.railway.app';
 
   const getUsers = async () => {
     try {

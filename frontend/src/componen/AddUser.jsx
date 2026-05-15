@@ -9,7 +9,7 @@ const AddUser = () => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
-    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    const API_URL = process.env.REACT_APP_API_URL || 'respectful-transformation-production-f907.up.railway.app';
 
     const validateForm = () => {
         const newErrors = {};
