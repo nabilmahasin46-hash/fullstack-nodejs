@@ -20,7 +20,8 @@ let dbConnected = false;
 })();
 
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN || 'https://fullstack-nodejs.pages.dev/',
+    origin: process.env.CORS_ORIGIN || 'https://fullstack-nodejs.pages.dev',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 };
 
