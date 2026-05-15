@@ -37,7 +37,7 @@ const AddUser = () => {
         
         try {
             setLoading(true);
-            await axios.post(`${API_URL}/users`, {
+            await axios.post('https://respectful-transformation-production-f907.up.railway.app/users', {
                 name: name.trim(),
                 email: email.trim(),
                 gender: gender

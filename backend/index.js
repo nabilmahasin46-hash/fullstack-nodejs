@@ -4,7 +4,7 @@ import db from "./config/database.js";
 import UserRoutes from "./routes/UserRoutes.js";
 const app = express();
 
-// Database connection dengan proper error handling
+
 let dbConnected = false;
 (async () => {
     try {
@@ -20,7 +20,7 @@ let dbConnected = false;
 })();
 
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: process.env.CORS_ORIGIN || 'https://fullstack-nodejs.pages.dev/',
     credentials: true
 };
 
@@ -44,7 +44,7 @@ app.use((req, res) => {
     res.status(404).json({ msg: 'Route not found' });
 });
 
-// Global error handler
+
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
     res.status(500).json({ 
