@@ -18,6 +18,7 @@ const db = new Sequelize(
         dialectOptions: {
             ssl: {
                 require: true,
+
                 rejectUnauthorized: false 
             }
         },
@@ -30,5 +31,16 @@ const db = new Sequelize(
         logging: process.env.DB_LOG === 'true' ? console.log : false 
     }
 );
+// Test connection
+db.authenticate()
+    .then(() => {
+        console.log('✅ Database Connected Successfully!');
+        console.log(`   Host: ${process.env.MYSQLHOST}:${process.env.MYSQLPORT}`);
+        console.log(`   Database: ${process.env.MYSQLDATABASE}`);
+    })
+    .catch((err) => {
+        console.error('❌ Database Connection Failed:', err.message);
+        console.error('   Check your .env file has correct credentials');
+    });
 
 export default db;
