@@ -9,7 +9,7 @@ const AddUser = () => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
-    const API_URL = process.env.REACT_APP_API_URL || 'respectful-transformation-production-f907.up.railway.app';
+    const API_URL = process.env.REACT_APP_API_URL || 'https://respectful-transformation-production-f907.up.railway.app';
 
     const validateForm = () => {
         const newErrors = {};
@@ -31,25 +31,38 @@ const AddUser = () => {
     };
 
     const saveUser = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    try {
+        setLoading(true);
+        await axios.post(`${API_URL}/users`, {
+            name: name.trim(),
+            email: email.trim(),
+            gender: gender
+        });
         
-        if (!validateForm()) return;
+        // Redirect ke home dan force reload
+        navigate('/', { replace: true });
+        window.location.reload(); // Force refresh halaman
         
-        try {
-            setLoading(true);
-            await axios.post('https://respectful-transformation-production-f907.up.railway.app/users', {
-                name: name.trim(),
-                email: email.trim(),
-                gender: gender
-            });
-            navigate('/');
-        } catch (error) {
-            console.error('Error creating user:', error);
-            alert('Error: ' + (error.response?.data?.msg || error.message));
-        } finally {
-            setLoading(false);
-        }
-    };
+    } catch (error) {
+        console.error('Full Error Object:', error);
+        console.error('Error Response:', error.response);
+        console.error('Error Data:', error.response?.data);
+        console.error('Error Message:', error.response?.data?.msg || error.message);
+        
+        const errorMessage = error.response?.data?.msg 
+            || error.response?.data?.message 
+            || error.message 
+            || 'Failed to create user';
+        
+        alert('Error: ' + errorMessage);
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <div className="columns mt-5 is-centered">

@@ -5,19 +5,22 @@ import { Link } from 'react-router-dom';
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const API_URL = process.env.REACT_APP_API_URL || 'respectful-transformation-production-f907.up.railway.app';
+  const location = useLocation();
+  const API_URL = process.env.REACT_APP_API_URL || 'https://respectful-transformation-production-f907.up.railway.app';
 
   const getUsers = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/users`);
-      // Ensure response.data is an array
+      console.log('Users fetched:', response.data);
+
       const data = Array.isArray(response.data) ? response.data : [];
       setUsers(data);
     } catch (error) {
       console.error('Error fetching users:', error);
-      alert('Failed to load users: ' + error.message);
-      setUsers([]); // Set empty array on error
+      console.error('Error Response:', error.response);
+      alert('Failed to load users: ' + (error.response?.data?.msg || error.message));
+      setUsers([]); 
     } finally {
       setLoading(false);
     }
@@ -25,7 +28,7 @@ const UserList = () => {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [location]);
 
   const deleteUser = async (id) => {
     if (!window.confirm('Are you sure?')) return;
@@ -35,7 +38,8 @@ const UserList = () => {
         getUsers(); 
     } catch (error) {
         console.error('Error deleting user:', error);
-        alert('Error deleting user: ' + error.response?.data?.msg || error.message);
+        console.error('Error Response:', error.response);
+        alert('Error deleting user: ' + (error.response?.data?.msg || error.message));
     } finally {
       setLoading(false);
     }
