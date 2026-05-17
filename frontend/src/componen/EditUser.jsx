@@ -11,7 +11,7 @@ const EditUser = () => {
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const { id } = useParams();
-    const API_URL = process.env.REACT_APP_API_URL || 'respectful-transformation-production-f907.up.railway.app';
+    const API_URL = process.env.REACT_APP_API_URL || 'https://respectful-transformation-production-f907.up.railway.app';
 
     const getUserById = async () => {
         try {
