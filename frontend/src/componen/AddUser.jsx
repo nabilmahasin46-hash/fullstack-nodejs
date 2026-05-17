@@ -44,8 +44,7 @@ const AddUser = () => {
         });
         
         // Redirect ke home dan force reload
-        navigate('/', { replace: true });
-        window.location.reload(); // Force refresh halaman
+       navigate('/', { replace: true });
         
     } catch (error) {
         console.error('Full Error Object:', error);
