@@ -21,9 +21,11 @@ const EditUser = () => {
         } catch (error) {
             console.log(error);
         }
-    };    useEffect(() => {
+    };
+
+    useEffect(() => {
         getUserById();
-    }, []);
+    }, [id, API_URL]);
     const updateUser = async (e) => {
         e.preventDefault();
         try {   
