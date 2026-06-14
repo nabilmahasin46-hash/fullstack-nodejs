@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
+import API_URL from '../config/api';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -11,12 +12,12 @@ const UserList = () => {
 
 
   const getUsers = async () => {  
-      const response = await axios.get('http://localhost:5000/users')
+      const response = await axios.get(`${API_URL}/users`)
       setUsers(response.data);
     };
   const deleteUser = async (id) => {
     try {
-        await axios.delete(`http://localhost:5000/users/${id}`);
+        await axios.delete(`${API_URL}/users/${id}`);
         getUsers(); 
     } catch (error) {
         console.log(error);

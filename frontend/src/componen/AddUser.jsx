@@ -1,6 +1,8 @@
 import React,{useState} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../config/api';
+
 const AddUser = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -10,7 +12,7 @@ const AddUser = () => {
     const saveUser = async (e) => {
         e.preventDefault();
         try {   
-        await axios.post('http://localhost:5000/users', {
+        await axios.post(`${API_URL}/users`, {
             name: name,
             email: email,
             gender: gender
