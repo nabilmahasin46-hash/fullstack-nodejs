@@ -10,22 +10,22 @@ const EditUser = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
-
-    const getUserById = async () => {
-        try {
-            const response = await axios.get(`${API_URL}/users/${id}`);
-            const { name, email, gender } = response.data;
-            setName(name);
-            setEmail(email);
-            setGender(gender);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     useEffect(() => {
+        const getUserById = async () => {
+            try {
+                const response = await axios.get(`${API_URL}/users/${id}`);
+                const { name, email, gender } = response.data;
+                setName(name);
+                setEmail(email);
+                setGender(gender);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        
         getUserById();
-    }, [id, API_URL]);
+    }, [id]);
+
     const updateUser = async (e) => {
         e.preventDefault();
         try {   
