@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
-import API_URL from '../config/api';
+import API_ENDPOINT from '../config/api';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [error, setError] = useState('');
 
  useEffect(() => {
     getUsers()}, []);
@@ -12,15 +13,21 @@ const UserList = () => {
 
 
   const getUsers = async () => {  
-      const response = await axios.get(`${API_URL}/users`)
-      setUsers(response.data);
+      try {
+        const response = await axios.get(`${API_ENDPOINT}/users`);
+        setUsers(response.data);
+      } catch (err) {
+        console.error('Error fetching users:', err);
+        setError(err.message);
+      }
     };
   const deleteUser = async (id) => {
     try {
-        await axios.delete(`${API_URL}/users/${id}`);
+        await axios.delete(`${API_ENDPOINT}/users/${id}`);
         getUsers(); 
     } catch (error) {
-        console.log(error);
+        console.error('Error deleting user:', error);
+        setError(error.message);
     }
   };
 
