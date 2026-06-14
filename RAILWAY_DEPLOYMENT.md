@@ -70,7 +70,6 @@ git push -u origin main
 
 ```env
 NODE_ENV=production
-PORT=3000
 
 # Database (dari MySQL service yang baru dibuat)
 DB_HOST=${{ MySQL.RAILWAY_PUBLIC_DOMAIN }}
@@ -82,7 +81,7 @@ DB_NAME=${{ MySQL.MYSQL_DB }}
 FRONTEND_URL=https://your-frontend-domain.railway.app
 ```
 
-**Note:** Railway menggunakan `${{ SERVICE.VARIABLE }}` untuk reference antar service.
+**Note:** Railway menggunakan `${{ SERVICE.VARIABLE }}` untuk reference antar service. Port akan di-assign otomatis oleh Railway.
 
 #### 2.5 Deploy Backend
 
@@ -185,6 +184,24 @@ Railway akan otomatis rebuild dan deploy.
 ---
 
 ## 🐛 Troubleshooting
+
+### **Backend Error: "npm ci" failed / lock file sync error**
+- Ini terjadi karena mismatch antara package.json dan package-lock.json
+- **Solusi:** Jalankan di local:
+  ```bash
+  cd backend
+  rm package-lock.json
+  npm install
+  git add package-lock.json
+  git commit -m "Update lock file"
+  git push origin main
+  ```
+- Railway akan auto-rebuild
+
+### **Error: Unsupported engine - Node version**
+- Jika error tentang Node 22 atau 20+, pastikan hapus `wrangler` dari devDependencies
+- Wrangler adalah untuk Cloudflare, bukan Railway
+- Sudah fixed di backend/package.json terbaru
 
 ### **Backend Error: "Cannot find module 'dotenv'"**
 - Pastikan `npm install` menjalankan dependencies
