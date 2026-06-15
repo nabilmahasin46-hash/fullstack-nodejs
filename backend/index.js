@@ -7,13 +7,15 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = process.env.FRONTEND_URL?.split(',') || ['http://localhost:3000'];
-
+// Set origin: true akan otomatis mengizinkan URL frontend apapun yang mengaksesnya
 app.use(cors({
-    origin: allowedOrigins,
+    origin: true, 
     credentials: true
 }));
 
 app.use(express.json());
+
+// Pastikan menggunakan '/api' agar cocok dengan panggilan axios di frontend Anda
 app.use('/api', UserRoutes);
+
 export default app;
